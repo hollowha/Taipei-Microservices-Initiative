@@ -22,5 +22,11 @@ func InitRoutes(r *gin.Engine) {
 			user.PUT("/:id", controllers.UpdateUserByID)
 			user.DELETE("/:id", controllers.DeleteUserByID)
 		}
+
+		// activity routes
+		activity := api.Group("/activitys")
+		{
+			activity.GET("/", controllers.GetAllActivitys)
+		}
 	}
 }
