@@ -11,6 +11,7 @@ func InitRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	{
 		api.GET("/example", controllers.Example)
+		api.POST("/upload/image", controllers.UploadImage)
 		// 可以在這裡添加更多的路由
 
 		// user routes
