@@ -5,22 +5,33 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // User struct 模擬一個 User 資料結構
 type User struct {
-	ID   int    `json:"id"`
+	ID   int    `json:"id" gorm:"primaryKey"`
 	Name string `json:"name"`
 	Age  int    `json:"age"`
 }
 
-var users = []User{
-	{ID: 1, Name: "John Doe", Age: 25},
-	{ID: 2, Name: "Jane Doe", Age: 30},
+// 全域變數保存資料庫連接
+var db *gorm.DB
+
+// SetDB 設定資料庫實例
+func SetDB(database *gorm.DB) {
+	db = database
 }
+
+// var users = []User{
+// 	{ID: 1, Name: "John Doe", Age: 25},
+// 	{ID: 2, Name: "Jane Doe", Age: 30},
+// }
 
 // GetAllUsers 取得所有使用者
 func GetAllUsers(c *gin.Context) {
+	var users []User
+	db.Find(&users)
 	c.JSON(http.StatusOK, users)
 }
 
@@ -32,13 +43,13 @@ func GetUserByID(c *gin.Context) {
 		return
 	}
 
-	for _, user := range users {
-		if user.ID == id {
-			c.JSON(http.StatusOK, user)
-			return
-		}
+	var user User
+	if result := db.First(&user, id); result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
 	}
-	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+
+	c.JSON(http.StatusOK, user)
 }
 
 // CreateUser 建立新使用者
@@ -48,8 +59,7 @@ func CreateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	newUser.ID = len(users) + 1
-	users = append(users, newUser)
+	db.Create(&newUser)
 	c.JSON(http.StatusCreated, newUser)
 }
 
@@ -61,22 +71,19 @@ func UpdateUserByID(c *gin.Context) {
 		return
 	}
 
-	var updateUser User
-	if err := c.ShouldBindJSON(&updateUser); err != nil {
+	var user User
+	if result := db.First(&user, id); result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	for i, user := range users {
-		if user.ID == id {
-			users[i].Name = updateUser.Name
-			users[i].Age = updateUser.Age
-			c.JSON(http.StatusOK, users[i])
-			return
-		}
-	}
-
-	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+	db.Save(&user)
+	c.JSON(http.StatusOK, user)
 }
 
 // DeleteUserByID 根據 ID 刪除使用者
@@ -86,14 +93,12 @@ func DeleteUserByID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
 	}
-
-	for i, user := range users {
-		if user.ID == id {
-			users = append(users[:i], users[i+1:]...)
-			c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
-			return
-		}
+	var user User
+	if result := db.First(&user, id); result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+	db.Delete(&user)
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }
