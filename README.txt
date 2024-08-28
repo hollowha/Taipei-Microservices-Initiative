@@ -25,6 +25,13 @@ npm run serve
 cd ..
 再
 cd backend
+
+2.5 環境初始化:
+go get -u github.com/gin-gonic/gin
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/sqlite
+
+
 3. 使用以下命令編譯並啟動後端服務：
 
 go run (ls *.go).Name

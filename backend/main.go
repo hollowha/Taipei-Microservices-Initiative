@@ -32,5 +32,5 @@ func main() {
 	routes.InitRoutes(r)
 
 	// 啟動伺服器
-	r.Run(":8080") // 預設會在本機的 8080 port 啟動
+	r.Run(":8081") // 預設會在本機的 8080 port 啟動
 }

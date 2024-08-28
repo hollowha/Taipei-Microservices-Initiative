@@ -43,13 +43,32 @@ export default {
     },
     methods: {
         onFileChange(e) {
-            const file = e.target.files[0];
-            this.form.image = file;
+            this.form.image = e.target.files[0];
         },
         submitForm() {
-            console.log("表單數據:", this.form);
-            alert('表單已提交，請查看控制台！');
-            this.resetForm();
+            // 創建 FormData 物件並填充數據
+            let formData = new FormData();
+            formData.append('title', this.form.title);
+            formData.append('description', this.form.description);
+            formData.append('location', this.form.location);
+            formData.append('time', this.form.time);
+            formData.append('image', this.form.image);
+
+            // 發送數據到後端 API
+            fetch('http://localhost:8081/api/upload/image', {
+                method: 'POST',
+                body: formData,  // FormData 物件將作為請求體
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server response:", data);
+                    alert('表單和圖片已成功提交！');
+                    this.resetForm();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('提交過程中出現錯誤，請檢查控制台！');
+                });
         },
         resetForm() {
             this.form.title = '';
@@ -61,6 +80,7 @@ export default {
     }
 }
 </script>
+
 
 <style scoped>
 .home {
