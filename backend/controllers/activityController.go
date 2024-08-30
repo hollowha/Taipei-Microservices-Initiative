@@ -9,7 +9,7 @@ import (
 
 // CreateEvent handles creating a new event
 func CreateEvent(c *gin.Context) {
-	var event models.Event
+	var event models.Activity
 
 	if err := c.ShouldBindJSON(&event); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -26,7 +26,7 @@ func CreateEvent(c *gin.Context) {
 
 // GetEvents handles retrieving all events
 func GetEvents(c *gin.Context) {
-	var events []models.Event
+	var events []models.Activity
 
 	if err := db.Find(&events).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve events"})
@@ -38,7 +38,7 @@ func GetEvents(c *gin.Context) {
 
 // GetAllActivitys 取得所有活動
 func GetAllActivitys(c *gin.Context) {
-	var activities []models.Event
+	var activities []models.Activity
 
 	// Retrieve all activities from the database
 	if err := db.Find(&activities).Error; err != nil {
