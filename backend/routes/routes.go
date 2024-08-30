@@ -30,7 +30,7 @@ func InitRoutes(r *gin.Engine) {
 			activity.GET("/all", controllers.GetAllActivitys)
 			activity.POST("/", controllers.CreateEvent)
 			activity.GET("/:title", controllers.GetEvents)
-			activity.GET("/:imageTitle", controllers.ServeImage)
+			activity.GET("/image/:imageTitle", controllers.ServeImage)
 		}
 	}
 }
