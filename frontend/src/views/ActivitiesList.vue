@@ -7,19 +7,8 @@
                 <p>{{ activity.description }}</p>
                 <p>地點：{{ activity.location }}</p>
                 <p>時間：{{ activity.time }}</p>
-                <img :src="activity.image_url" alt="Activity Image" style="width: 100px; height: auto;">
-                <!-- <div style="width: 100%">
-                    <iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=zh-TW&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-                        <a href="https://www.gps.ie/">gps tracker sport</a>
-                    </iframe>
-                </div> -->
-                <div style="width: 100%">
-                    <iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=zh-TW&amp;q=桃園市 縣府路 256巷+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-                        <a href="https://www.gps.ie/">gps tracker sport</a>
-                    </iframe>
-                </div>
+                <!-- 使用 v-if 確保只有當圖片 URL 存在時才顯示圖片 -->
+                <img v-if="activity.image_url" :src="activity.image_url" alt="Activity Image" class="activity-image">
             </li>
         </ul>
     </div>
@@ -38,7 +27,7 @@ export default {
     },
     methods: {
         fetchActivities() {
-            fetch('http://localhost:8081/api/activitys/')
+            fetch('http://localhost:8081/api/activitys/all')
                 .then(response => response.json())
                 .then(data => {
                     this.activities = data;
@@ -54,8 +43,11 @@ export default {
 <style>
 .activities-list {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .activities-list ul {
@@ -67,5 +59,13 @@ export default {
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
     padding-bottom: 10px;
+}
+
+.activity-image {
+    width: 100%;
+    max-width: 300px;
+    /* 限制圖片大小 */
+    height: auto;
+    margin-top: 10px;
 }
 </style>
