@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"backend/models"
+	"database/sql"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -54,4 +56,28 @@ func GetAllActivitys(c *gin.Context) {
 
 	// Return the activities in JSON format
 	c.JSON(http.StatusOK, activities)
+}
+
+func ServeImage(c *gin.Context) {
+	imageTitle := c.Param("imageTitle") // 從 URL 參數中取得圖片名稱
+
+	var imagePath string
+
+	// 根據 title 從資料庫中查詢 imagePath
+	query := "SELECT image_path FROM activities WHERE title = ?"
+	err := db.Table("activities").Exec(query, imageTitle).Scan(&imagePath).Error
+	if err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Image not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve image path"})
+		}
+		return
+	}
+
+	// 構建圖片的完整路徑
+	fullImagePath := filepath.Join("Taipei-Microservices-Initiative/uploads", imagePath)
+
+	// 檢查文件是否存在，並返回給前端
+	c.File(fullImagePath)
 }
