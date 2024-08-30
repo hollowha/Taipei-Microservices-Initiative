@@ -13,11 +13,11 @@
             <div class="form-group">
                 <label for="location">活動地點:</label>
                 <input id="location" v-model="form.location" type="text" required>
-                <!-- 地圖的 iframe，動態顯示地點 -->
-                <div style="width: 100%; margin-top: 10px;">
+                <!-- 只有在地點有文字时才显示地圖 -->
+                <div v-if="form.location" class="map-container">
                     <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                        :src="'https://maps.google.com/maps?width=100%25&amp;height=300&amp;hl=zh-TW&amp;q=' + encodeURIComponent(form.location) + '+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'">
-                    </iframe>
+                        :src="'https://maps.google.com/maps?width=100%25&amp;height=300&amp;hl=zh-TW&amp;q=' + encodeURIComponent(form.location) + '+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed&disableDefaultUI=true&zoomControl=false&mapTypeControl=false&scaleControl=false&streetViewControl=false'"
+                        allowfullscreen aria-hidden="false" tabindex="0"></iframe>
                 </div>
             </div>
             <div class="form-group">
@@ -32,7 +32,6 @@
         </form>
     </div>
 </template>
-
 
 <script>
 export default {
@@ -67,9 +66,9 @@ export default {
                     return response.json();
                 })
                 .then(data => {
-                    if (data.path) { // 修改此處以使用實際的返回鍵 'path'
+                    if (data.path) {
                         console.log("Image uploaded, URL:", data.path);
-                        this.submitEventDetails(data.path); // 使用圖片存儲路徑作為參數呼叫 submitEventDetails
+                        this.submitEventDetails(data.path);
                     } else {
                         throw new Error('Failed to upload image. No image URL provided.');
                     }
@@ -80,7 +79,7 @@ export default {
                 });
         },
         submitEventDetails(imageUrl) {
-            let dateObject = new Date(this.form.time);  // Convert string to Date object
+            let dateObject = new Date(this.form.time);
             let formattedTime = dateObject.toISOString();
 
             let detailsData = {
@@ -122,32 +121,34 @@ export default {
             this.form.image = null;
         }
     }
-
 }
 </script>
 
-
 <style scoped>
 .home {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
+    text-align: center;
+    font-size: 2rem;
     color: #333;
+    margin-bottom: 30px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: bold;
     color: #333;
 }
 
@@ -156,30 +157,57 @@ input[type="datetime-local"],
 textarea,
 input[type="file"] {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    box-sizing: border-box;
+    background: #fafafa;
+    transition: border-color 0.3s ease;
 }
 
-input[type="file"] {
-    padding: 5px;
+input[type="text"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus,
+input[type="file"]:focus {
+    border-color: #0056b3;
+    outline: none;
 }
 
 textarea {
-    height: 100px;
+    height: 120px;
+}
+
+.map-container {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .submit-btn {
-    padding: 10px 20px;
+    display: block;
+    width: 100%;
+    padding: 15px;
     background-color: #0056b3;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 1.25rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .submit-btn:hover {
     background-color: #004494;
+    transform: translateY(-2px);
+}
+
+.submit-btn:active {
+    background-color: #003366;
+    transform: translateY(0);
 }
 </style>
