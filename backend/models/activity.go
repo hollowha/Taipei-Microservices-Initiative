@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Event struct {
+type Activity struct {
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Location    string    `json:"location"`
