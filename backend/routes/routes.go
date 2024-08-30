@@ -27,10 +27,9 @@ func InitRoutes(r *gin.Engine) {
 		// activity routes
 		activity := api.Group("/activitys")
 		{
-			activity.GET("/", controllers.GetAllActivitys)
-			activity.POST("/events", controllers.CreateEvent)
-			activity.GET("/events", controllers.GetEvents)
-			activity.POST("/upload", controllers.UploadImage)
+			activity.GET("/all", controllers.GetAllActivitys)
+			activity.POST("/", controllers.CreateEvent)
+			activity.GET("/", controllers.GetEvents)
 		}
 	}
 }
