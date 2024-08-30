@@ -3,6 +3,7 @@ package controllers
 import (
 	"backend/models"
 	"database/sql"
+	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -33,12 +34,12 @@ func CreateEvent(c *gin.Context) {
 }
 
 func GetEvents(c *gin.Context) {
-	title := c.Query("title") // 從查詢參數中取得 title
+	title := c.Param("title") // 從查詢參數中取得 title
 
 	var events []models.Activity
 
 	// 根據 title 查詢資料庫中的 activities 表
-	if err := db.Where("title = ?", title).Find(&events).Error; err != nil {
+	if err := db.Table("activities").Where("title = ?", title).Scan(&events).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve events"})
 		return
 	}
@@ -48,7 +49,7 @@ func GetEvents(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "No events found with the given title"})
 		return
 	}
-
+	fmt.Println(events)
 	// 返回找到的活動資料
 	c.JSON(http.StatusOK, events)
 }
@@ -70,10 +71,10 @@ func GetAllActivitys(c *gin.Context) {
 func ServeImage(c *gin.Context) {
 	imageTitle := c.Param("imageTitle") // 從 URL 參數中取得圖片名稱
 
-	var imagePath string
+	var image_name string
 
 	// 使用 GORM 的 Raw 方法執行 SELECT 查詢，並將結果掃描到 imagePath 變數中
-	err := db.Raw("SELECT image_path FROM activities WHERE title = ?", imageTitle).Scan(&imagePath).Error
+	err := db.Raw("SELECT image_path FROM activities WHERE title = ?", imageTitle).Scan(&image_name).Error
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Image not found"})
@@ -84,7 +85,7 @@ func ServeImage(c *gin.Context) {
 	}
 
 	// 構建圖片的完整路徑
-	fullImagePath := filepath.Join("uploads", imagePath)
+	fullImagePath := filepath.Join("uploads", image_name)
 
 	// 檢查文件是否存在，並返回給前端
 	c.File(fullImagePath)
