@@ -38,5 +38,14 @@ func GetEvents(c *gin.Context) {
 
 // GetAllActivitys 取得所有活動
 func GetAllActivitys(c *gin.Context) {
-	c.JSON(http.StatusOK, "to be done......")
+	var activities []models.Event
+
+	// Retrieve all activities from the database
+	if err := db.Find(&activities).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve activities"})
+		return
+	}
+
+	// Return the activities in JSON format
+	c.JSON(http.StatusOK, activities)
 }
