@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -23,4 +24,5 @@ func UploadImage(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Image uploaded successfully!", "path": savePath})
+	fmt.Println("Image path:", savePath)
 }

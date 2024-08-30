@@ -21,7 +21,7 @@ func CreateEvent(c *gin.Context) {
 
 	// 使用 SQL 查詢插入數據
 	query := `INSERT INTO activities VALUES (?, ?, ?, ?, ?)`
-	err := db.Exec(query, event.Title, event.Description, event.Location, event.ImagePath, event.Time).Error
+	err := db.Exec(query, event.Title, event.Description, event.Location, event.ImageName, event.Time).Error
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create event"})
@@ -75,7 +75,7 @@ func ServeImage(c *gin.Context) {
 	}
 
 	// 構建圖片的完整路徑
-	fullImagePath := filepath.Join("Taipei-Microservices-Initiative/uploads", imagePath)
+	fullImagePath := filepath.Join("uploads", imagePath)
 
 	// 檢查文件是否存在，並返回給前端
 	c.File(fullImagePath)
