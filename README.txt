@@ -26,28 +26,37 @@ cd ..
 再
 cd backend
 
-2.5 環境初始化:
+2.5 環境初始化 安裝相關套件:
 go get -u github.com/gin-gonic/gin
 go get -u gorm.io/gorm
 go get -u gorm.io/driver/sqlite
+go install github.com/air-verse/air@latest
+go get -u github.com/gin-contrib/cors
+
+或
+
+go mod tidy
+go mod verify
 
 
 3. 使用以下命令編譯並啟動後端服務：
 
+- 沒有 hot reload
 go run (ls *.go).Name
 or
 go run main.go
 or
 go run *.go
 
-4. 後端服務現在應該在 http://localhost:8080 開始運行。這個地址將用於前端應用與後端服務的通信。
+- 有 hot reload
+`$ air`
+
+4. 後端服務現在應該在 http://localhost:8081 開始運行。這個地址將用於前端應用與後端服務的通信。
 
 
 資料庫配置
 ----------
-1. 確保本地安裝和運行 PostgreSQL 數據庫。
-2. 使用 pgAdmin 或任何 PostgreSQL 客戶端連接到你的數據庫。
-3. 根據需要配置數據庫設置（用戶名、密碼、數據庫名等）。
+使用 sqlite studio
 
 注意：請確保在開始前檢查所有端口配置和環境變量設置是否符合你的開發環境。
 
