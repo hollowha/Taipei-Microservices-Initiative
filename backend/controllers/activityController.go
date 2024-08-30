@@ -32,15 +32,24 @@ func CreateEvent(c *gin.Context) {
 	c.JSON(http.StatusOK, event)
 }
 
-// GetEvents handles retrieving all events
 func GetEvents(c *gin.Context) {
+	title := c.Query("title") // 從查詢參數中取得 title
+
 	var events []models.Activity
 
-	if err := db.Find(&events).Error; err != nil {
+	// 根據 title 查詢資料庫中的 activities 表
+	if err := db.Where("title = ?", title).Find(&events).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve events"})
 		return
 	}
 
+	// 如果沒有找到對應的活動資料，返回 404
+	if len(events) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No events found with the given title"})
+		return
+	}
+
+	// 返回找到的活動資料
 	c.JSON(http.StatusOK, events)
 }
 
