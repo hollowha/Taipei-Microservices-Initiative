@@ -29,8 +29,8 @@ func InitRoutes(r *gin.Engine) {
 		{
 			activity.GET("/all", controllers.GetAllActivitys)
 			activity.POST("/", controllers.CreateEvent)
-			activity.GET("/by-title/:title", controllers.GetEvents)             // Changed to '/by-title/:title'
-			activity.GET("/by-image-title/:imageTitle", controllers.ServeImage) // Changed to '/by-image-title/:imageTitle'
+			activity.GET("/:title", controllers.GetEvents)
+			activity.GET("/image/:imageTitle", controllers.ServeImage)
 		}
 	}
 }
