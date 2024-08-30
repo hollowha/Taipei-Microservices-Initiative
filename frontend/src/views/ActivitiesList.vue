@@ -6,8 +6,6 @@
                 <h3>{{ activity.title }}</h3>
                 <p>{{ activity.description }}</p>
                 <p>地點：{{ activity.location }}</p>
-
-
                 <p>時間：{{ activity.time }}</p>
                 <img :src="activity.image_url" alt="Activity Image" style="width: 100px; height: auto;">
                 <!-- <div style="width: 100%">
@@ -22,8 +20,6 @@
                         <a href="https://www.gps.ie/">gps tracker sport</a>
                     </iframe>
                 </div>
-
-
             </li>
         </ul>
     </div>
