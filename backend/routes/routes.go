@@ -7,14 +7,14 @@ import (
 )
 
 func InitRoutes(r *gin.Engine) {
-	// 建立 RouterGroup
+	// Create RouterGroup for API
 	api := r.Group("/api")
 	{
 		api.GET("/example", controllers.Example)
 		api.POST("/upload/image", controllers.UploadImage)
-		// 可以在這裡添加更多的路由
+		// Additional routes can be added here
 
-		// user routes
+		// User routes
 		user := api.Group("/users")
 		{
 			user.GET("/", controllers.GetAllUsers)
@@ -24,13 +24,13 @@ func InitRoutes(r *gin.Engine) {
 			user.DELETE("/:id", controllers.DeleteUserByID)
 		}
 
-		// activity routes
+		// Activity routes
 		activity := api.Group("/activitys")
 		{
 			activity.GET("/all", controllers.GetAllActivitys)
 			activity.POST("/", controllers.CreateEvent)
 			activity.GET("/:title", controllers.GetEvents)
-			activity.GET("/img/:imageTitle", controllers.ServeImage)
+			activity.GET("/image/:imageTitle", controllers.ServeImage)
 		}
 	}
 }
