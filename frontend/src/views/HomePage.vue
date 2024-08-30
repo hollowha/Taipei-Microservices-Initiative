@@ -46,28 +46,65 @@ export default {
             this.form.image = e.target.files[0];
         },
         submitForm() {
-            // 創建 FormData 物件並填充數據
             let formData = new FormData();
-            formData.append('title', this.form.title);
-            formData.append('description', this.form.description);
-            formData.append('location', this.form.location);
-            formData.append('time', this.form.time);
             formData.append('image', this.form.image);
 
-            // 發送數據到後端 API
             fetch('http://localhost:8081/api/upload/image', {
                 method: 'POST',
-                body: formData,  // FormData 物件將作為請求體
+                body: formData,
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    console.log("Server response:", data);
-                    alert('表單和圖片已成功提交！');
+                    if (data.path) { // 修改此處以使用實際的返回鍵 'path'
+                        console.log("Image uploaded, URL:", data.path);
+                        this.submitEventDetails(data.path); // 使用圖片存儲路徑作為參數呼叫 submitEventDetails
+                    } else {
+                        throw new Error('Failed to upload image. No image URL provided.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading image:', error);
+                    alert('圖片上傳過程中出現錯誤！');
+                });
+        },
+        submitEventDetails(imageUrl) {
+            let dateObject = new Date(this.form.time);  // Convert string to Date object
+            let formattedTime = dateObject.toISOString();
+
+            let detailsData = {
+                title: this.form.title,
+                description: this.form.description,
+                location: this.form.location,
+                time: formattedTime,
+                image_url: imageUrl
+            };
+
+            fetch('http://localhost:8081/api/activitys/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(detailsData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Activity submitted with image URL:", data);
+                    alert('活動成功提交！');
                     this.resetForm();
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('提交過程中出現錯誤，請檢查控制台！');
+                    console.error('Error submitting activity:', error);
+                    alert('活動提交過程中出現錯誤！');
                 });
         },
         resetForm() {
@@ -78,6 +115,7 @@ export default {
             this.form.image = null;
         }
     }
+
 }
 </script>
 
