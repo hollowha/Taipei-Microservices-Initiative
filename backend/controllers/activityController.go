@@ -18,7 +18,7 @@ func CreateEvent(c *gin.Context) {
 	}
 
 	// 使用 SQL 查詢插入數據
-	query := `INSERT INTO activities (title, description, location, time, image_url) VALUES (?, ?, ?, ?, ?)`
+	query := `INSERT INTO Activity VALUES (?, ?, ?, ?, ?)`
 	err := db.Exec(query, event.Title, event.Description, event.Location, event.Time, event.ImageURL).Error
 
 	if err != nil {
