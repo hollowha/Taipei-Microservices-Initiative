@@ -63,9 +63,8 @@ func ServeImage(c *gin.Context) {
 
 	var imagePath string
 
-	// 根據 title 從資料庫中查詢 imagePath
-	query := "SELECT image_path FROM activities WHERE title = ?"
-	err := db.Table("activities").Exec(query, imageTitle).Scan(&imagePath).Error
+	// 使用 GORM 的 Raw 方法執行 SELECT 查詢，並將結果掃描到 imagePath 變數中
+	err := db.Raw("SELECT image_path FROM activities WHERE title = ?", imageTitle).Scan(&imagePath).Error
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Image not found"})
