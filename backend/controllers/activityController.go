@@ -11,16 +11,22 @@ import (
 func CreateEvent(c *gin.Context) {
 	var event models.Activity
 
+	// 將請求的 JSON 數據綁定到 event 變數
 	if err := c.ShouldBindJSON(&event); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := db.Create(&event).Error; err != nil {
+	// 使用 SQL 查詢插入數據
+	query := `INSERT INTO activities (title, description, location, time, image_url) VALUES (?, ?, ?, ?, ?)`
+	err := db.Exec(query, event.Title, event.Description, event.Location, event.Time, event.ImageURL).Error
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create event"})
 		return
 	}
 
+	// 返回成功訊息和插入的活動數據
 	c.JSON(http.StatusOK, event)
 }
 
