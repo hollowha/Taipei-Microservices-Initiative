@@ -9,5 +9,5 @@ type Activity struct {
 	Description string    `json:"description"`
 	Location    string    `json:"location"`
 	Time        time.Time `json:"time"`
-	ImageURL    string    `json:"image_url"`
+	ImageName   string    `json:"image_name"`
 }

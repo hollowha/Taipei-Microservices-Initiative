@@ -29,7 +29,8 @@ func InitRoutes(r *gin.Engine) {
 		{
 			activity.GET("/all", controllers.GetAllActivitys)
 			activity.POST("/", controllers.CreateEvent)
-			activity.GET("/", controllers.GetEvents)
+			activity.GET("/:title", controllers.GetEvents)
+			activity.GET("/:imageTitle", controllers.ServeImage)
 		}
 	}
 }
