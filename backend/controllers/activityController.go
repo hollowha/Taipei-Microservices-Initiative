@@ -21,7 +21,7 @@ func CreateEvent(c *gin.Context) {
 
 	// 使用 SQL 查詢插入數據
 	query := `INSERT INTO activities VALUES (?, ?, ?, ?, ?)`
-	err := db.Exec(query, event.Title, event.Description, event.Location, event.Time, event.ImageURL).Error
+	err := db.Exec(query, event.Title, event.Description, event.Location, event.ImagePath, event.Time).Error
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create event"})
