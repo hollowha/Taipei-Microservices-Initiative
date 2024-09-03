@@ -4,6 +4,7 @@
       <div class="nav-container">
         <router-link to="/" exact>首頁</router-link>
         <router-link to="/activities">查看活動</router-link>
+        <router-link to="/vote">活動投票</router-link>
       </div>
     </nav>
     <div class="content">
