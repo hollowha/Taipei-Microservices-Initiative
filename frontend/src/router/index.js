@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
 import ActivitiesList from "@/views/ActivitiesList.vue";
 import NoiceDetect from "@/views/NoiceDetect.vue";
+import VotePage from "@/views/VotePage.vue";  // 確保這行存在
 
-// 定義路由配置
 const routes = [
   {
     path: "/",
@@ -20,9 +20,13 @@ const routes = [
     name: "noice-detect",
     component: NoiceDetect,
   },
+  {
+    path: "/vote",  // 確保這行存在
+    name: "vote",
+    component: VotePage,
+  }
 ];
 
-// 創建路由器實例
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
