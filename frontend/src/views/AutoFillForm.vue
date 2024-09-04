@@ -2,7 +2,7 @@
     <div class="auto-fill-form">
         <div class="button-container">
             <button class="button" @click="button1Clicked">simpleform u=5</button>
-            <button class="button" @click="button2Clicked">simpleform u=6</button>
+            <button class="button" @click="button2Clicked">anotherform u=6</button>
             <button class="button" @click="button3Clicked">Button 3</button>
         </div>
     </div>
@@ -14,7 +14,7 @@ import fontkit from '@pdf-lib/fontkit';
 
 export default {
     methods: {
-        async modifyPdf(userid, textCoordinates={x:258,y:690}, formname) {
+        async modifyPdf(userid, formname) {
             try {
                 // Fetch the PDF template
                 const response = await fetch('http://localhost:8081/api/autofillform/'+formname);
@@ -24,19 +24,19 @@ export default {
                 const userDataResponse = await fetch('http://localhost:8081/api/users/' + userid);
                 const userData = await userDataResponse.json();
                 console.log(userData);
+                let a = "name";
+                console.log(userData[a]);
 
-                // Fetch the img
-                const imgResponse = await fetch('http://localhost:8081/api/users/image/' + userData.imgurl);
-                const imageBytes = await imgResponse.arrayBuffer();
                 
-                
+                const pdfDetailsOringin = await fetch('http://localhost:8081/api/autofillform/detail/' + formname);
+                const pdfDetailsfull = await pdfDetailsOringin.json();
+                const pdfDetailsText = pdfDetailsfull.detail;
+                const pdfDetails = JSON.parse(pdfDetailsText);
+                console.log(pdfDetails);
 
                 // Load the PDF using PDF-lib
                 const pdfDoc = await PDFDocument.load(arrayBuffer);
-
-                // Embed the image in the PDF
-                const embeddedImage = await pdfDoc.embedPng(imageBytes);
-
+                
                 // Register fontkit to handle custom fonts
                 pdfDoc.registerFontkit(fontkit);
 
@@ -50,30 +50,34 @@ export default {
                 const pages = pdfDoc.getPages();
                 const firstPage = pages[0];
 
-                // Add the custom text
-                firstPage.drawText(userData.name, {
-                    x: textCoordinates.x,
-                    y: textCoordinates.y,
-                    size: 20,
-                    font: customFont,
-                    color: rgb(0, 0, 0),
-                });
-                firstPage.drawText(userData.phone, {
-                    x: textCoordinates.x,
-                    y: textCoordinates.y-38,
-                    size: 20,
-                    font: customFont,
-                    color: rgb(0, 0, 0),
-                });
+                console.log(pdfDetails.objects.length);
 
-                // Draw the image
-                const imageCoordinates = { x: 350, y: 480, width: 100, height: 120 };
-                firstPage.drawImage(embeddedImage, {
-                    x: imageCoordinates.x,
-                    y: imageCoordinates.y,
-                    width: imageCoordinates.width,
-                    height: imageCoordinates.height,
-                });
+                for (let i = 0; i < pdfDetails.objects.length; i++) {
+                    const detail = pdfDetails.objects[i];
+                    console.log(detail);
+
+                    if (detail.datatype == "text") {
+                        console.log("in text area");
+                        firstPage.drawText(userData[detail.data], {
+                            x: detail.x,
+                            y: detail.y,
+                            size: detail.size,
+                            font: customFont,
+                            color: rgb(0, 0, 0),
+                        });
+                    } else if (detail.datatype == "image") {
+                        const imgResponse = await fetch('http://localhost:8081/api/users/image/' + userData[detail.data]);
+                        const imageBytes = await imgResponse.arrayBuffer();
+                        const embeddedImage = await pdfDoc.embedPng(imageBytes);
+                        firstPage.drawImage(embeddedImage, {
+                            x: detail.x,
+                            y: detail.y,
+                            width: detail.width,
+                            height: detail.height,
+                        });
+                    }
+                    
+                }
 
                 // Save the modified PDF
                 const pdfBytes = await pdfDoc.save();
@@ -91,20 +95,20 @@ export default {
 
         button1Clicked() {
             const userid = "5";
-            const textCoordinates = { x: 258, y: 690 };
+            
             const formname = "simpleform";
 
-            this.modifyPdf(userid, textCoordinates, formname);
+            this.modifyPdf(userid, formname);
         },
         button2Clicked() {
             console.log("Button 2 is pressed");
             const userid = 6;
-            const textCoordinates = { x: 258, y: 690 };
+            
             
             // const formname = "modified";
-            const formname = "simpleform";
+            const formname = "anotherform";
 
-            this.modifyPdf(userid, textCoordinates, formname);
+            this.modifyPdf(userid, formname);
         },
         button3Clicked() {
             console.log("Button 3 is pressed");

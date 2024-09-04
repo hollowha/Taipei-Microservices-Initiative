@@ -38,6 +38,7 @@ func InitRoutes(r *gin.Engine) {
 		{
 
 			autofillform.GET("/:formname", controllers.FillFormbyID)
+			autofillform.GET("/detail/:formname", controllers.GetFormDetail)
 
 		}
 	}
