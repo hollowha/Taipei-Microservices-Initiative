@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
 import ActivitiesList from "@/views/ActivitiesList.vue";
+import AutoFillForm from "@/views/AutoFillForm.vue";
 
 // 定義路由配置
 const routes = [
@@ -13,6 +14,11 @@ const routes = [
     path: "/activities",
     name: "activities",
     component: ActivitiesList,
+  },
+  {
+    path: "/auto-fill-form",
+    name: "auto-fill-form",
+    component: AutoFillForm,
   },
 ];
 

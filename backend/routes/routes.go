@@ -32,5 +32,11 @@ func InitRoutes(r *gin.Engine) {
 			activity.GET("/:title", controllers.GetEvents)
 			activity.GET("/image/:imageTitle", controllers.ServeImage)
 		}
+
+		autofillform := api.Group("/autofillform")
+		{
+			autofillform.GET("/:id", controllers.FillFormbyID)
+
+		}
 	}
 }

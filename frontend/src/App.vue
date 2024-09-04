@@ -4,6 +4,7 @@
       <div class="nav-container">
         <router-link to="/" exact>首頁</router-link>
         <router-link to="/activities">查看活動</router-link>
+        <router-link to="/auto-fill-form">自動填表</router-link>
       </div>
     </nav>
     <div class="content">
