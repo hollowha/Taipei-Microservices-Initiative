@@ -18,6 +18,7 @@ func InitRoutes(r *gin.Engine) {
 		user := api.Group("/users")
 		{
 			user.GET("/", controllers.GetAllUsers)
+			user.GET("/image/:filename", controllers.GetUserIMGByFileName)
 			user.GET("/:id", controllers.GetUserByID)
 			user.POST("/", controllers.CreateUser)
 			user.PUT("/:id", controllers.UpdateUserByID)
@@ -35,6 +36,7 @@ func InitRoutes(r *gin.Engine) {
 
 		autofillform := api.Group("/autofillform")
 		{
+
 			autofillform.GET("/:formname", controllers.FillFormbyID)
 
 		}

@@ -12,7 +12,7 @@ func FillFormbyID(c *gin.Context) {
 
 	formname := c.Param("formname")
 	// Get the form file path based on the ID
-	formFilePath := "./formfile/" + formname + ".pdf"
+	formFilePath := "./assets/formfile/" + formname + ".pdf"
 
 	// Open the form file
 	formFile, err := os.Open(formFilePath)

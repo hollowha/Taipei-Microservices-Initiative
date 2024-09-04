@@ -1,8 +1,8 @@
 <template>
     <div class="auto-fill-form">
         <div class="button-container">
-            <button class="button" @click="button1Clicked">simpleform</button>
-            <button class="button" @click="button2Clicked">modified</button>
+            <button class="button" @click="button1Clicked">simpleform u=5</button>
+            <button class="button" @click="button2Clicked">simpleform u=6</button>
             <button class="button" @click="button3Clicked">Button 3</button>
         </div>
     </div>
@@ -14,7 +14,7 @@ import fontkit from '@pdf-lib/fontkit';
 
 export default {
     methods: {
-        async modifyPdf(userid, imageUrl, textCoordinates={x:258,y:690}, imageCoordinates={ x: 50, y: 500, width: 200, height: 100 }, formname) {
+        async modifyPdf(userid, textCoordinates={x:258,y:690}, formname) {
             try {
                 // Fetch the PDF template
                 const response = await fetch('http://localhost:8081/api/autofillform/'+formname);
@@ -25,8 +25,17 @@ export default {
                 const userData = await userDataResponse.json();
                 console.log(userData);
 
+                // Fetch the img
+                const imgResponse = await fetch('http://localhost:8081/api/users/image/' + userData.imgurl);
+                const imageBytes = await imgResponse.arrayBuffer();
+                
+                
+
                 // Load the PDF using PDF-lib
                 const pdfDoc = await PDFDocument.load(arrayBuffer);
+
+                // Embed the image in the PDF
+                const embeddedImage = await pdfDoc.embedPng(imageBytes);
 
                 // Register fontkit to handle custom fonts
                 pdfDoc.registerFontkit(fontkit);
@@ -36,9 +45,6 @@ export default {
                 const fontBytes = await fetch(fontUrl).then(res => res.arrayBuffer());
                 const customFont = await pdfDoc.embedFont(fontBytes);
 
-                // Fetch and embed the image (ensure the path is correct)
-                const imageBytes = await fetch(imageUrl).then(res => res.arrayBuffer());
-                const embeddedImage = await pdfDoc.embedPng(imageBytes);
 
                 // Get the first page of the document
                 const pages = pdfDoc.getPages();
@@ -61,6 +67,7 @@ export default {
                 });
 
                 // Draw the image
+                const imageCoordinates = { x: 350, y: 480, width: 100, height: 120 };
                 firstPage.drawImage(embeddedImage, {
                     x: imageCoordinates.x,
                     y: imageCoordinates.y,
@@ -84,22 +91,20 @@ export default {
 
         button1Clicked() {
             const userid = "5";
-            const imageUrl = require('@/assets/sampleimg.png'); // Replace with actual image path
             const textCoordinates = { x: 258, y: 690 };
-            const imageCoordinates = { x: 50, y: 500, width: 200, height: 100 };
             const formname = "simpleform";
 
-            this.modifyPdf(userid, imageUrl, textCoordinates, imageCoordinates, formname);
+            this.modifyPdf(userid, textCoordinates, formname);
         },
         button2Clicked() {
             console.log("Button 2 is pressed");
             const userid = 6;
-            const imageUrl = require('@/assets/sampleimg.png'); // Replace with actual image path
             const textCoordinates = { x: 258, y: 690 };
-            const imageCoordinates = { x: 50, y: 500, width: 200, height: 200 };
-            const formname = "modified";
+            
+            // const formname = "modified";
+            const formname = "simpleform";
 
-            this.modifyPdf(userid, imageUrl, textCoordinates, imageCoordinates, formname);
+            this.modifyPdf(userid, textCoordinates, formname);
         },
         button3Clicked() {
             console.log("Button 3 is pressed");
