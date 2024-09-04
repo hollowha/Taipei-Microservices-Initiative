@@ -35,7 +35,7 @@ func InitRoutes(r *gin.Engine) {
 
 		autofillform := api.Group("/autofillform")
 		{
-			autofillform.GET("/:id", controllers.FillFormbyID)
+			autofillform.GET("/:formname", controllers.FillFormbyID)
 
 		}
 	}

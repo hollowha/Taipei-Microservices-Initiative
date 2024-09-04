@@ -9,8 +9,10 @@ import (
 )
 
 func FillFormbyID(c *gin.Context) {
+
+	formname := c.Param("formname")
 	// Get the form file path based on the ID
-	formFilePath := "./formfile/simpleform.pdf"
+	formFilePath := "./formfile/" + formname + ".pdf"
 
 	// Open the form file
 	formFile, err := os.Open(formFilePath)
@@ -21,8 +23,9 @@ func FillFormbyID(c *gin.Context) {
 	defer formFile.Close()
 
 	// Set the appropriate headers for the file download
+	newFileName := "BE_" + formname + ".pdf"
 	c.Header("Content-Type", "application/pdf")
-	c.Header("Content-Disposition", "attachment; filename=simpleform.pdf")
+	c.Header("Content-Disposition", "attachment; filename="+newFileName)
 
 	// Copy the file content to the response writer
 	if _, err := io.Copy(c.Writer, formFile); err != nil {
