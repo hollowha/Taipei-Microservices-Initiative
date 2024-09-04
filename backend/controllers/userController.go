@@ -10,9 +10,11 @@ import (
 
 // User struct 模擬一個 User 資料結構
 type User struct {
-	ID   int    `json:"id" gorm:"primaryKey"`
-	Name string `json:"name"`
-	Age  int    `json:"age"`
+	ID     int    `json:"id" gorm:"primaryKey"`
+	Name   string `json:"name"`
+	Age    int    `json:"age"`
+	Phone  string `json:"phone"`
+	Imgurl string `json:"imgurl"`
 }
 
 // 全域變數保存資料庫連接
