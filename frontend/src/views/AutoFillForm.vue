@@ -55,6 +55,18 @@ export default {
                     color: rgb(0, 0, 0),
                 });
 
+                // Fetch and embed the image (ensure the path is correct)
+                const imageUrl = require('@/assets/sampleimg.png'); // Replace with your image path
+                const imageBytes = await fetch(imageUrl).then(res => res.arrayBuffer());
+                const embeddedImage = await pdfDoc.embedPng(imageBytes); // Use embedJpg for JPG
+
+                // Draw the image on the PDF
+                firstPage.drawImage(embeddedImage, {
+                    x: 50,
+                    y: 500, // Adjust coordinates as needed
+                    width: 100, // Adjust size as needed
+                    height: 200,
+                });
                 
 
                 // Save the modified PDF
