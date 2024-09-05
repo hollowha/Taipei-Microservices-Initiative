@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
 import ActivitiesList from "@/views/ActivitiesList.vue";
 import NoiceDetect from "@/views/NoiceDetect.vue";
+import ReportSubmit from "@/views/ReportSubmit.vue";
+import ReportManage from "@/views/ReportManage.vue";
 
 // 定義路由配置
 const routes = [
@@ -20,6 +22,17 @@ const routes = [
     name: "noice-detect",
     component: NoiceDetect,
   },
+  {
+    path: "/report",
+    name: "report",
+    component: ReportSubmit,
+  },
+  {
+    path: "/report-manage",
+    name: "report-manage",
+    component: ReportManage,
+  }
+
 ];
 
 // 創建路由器實例

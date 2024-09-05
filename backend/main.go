@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -21,6 +22,12 @@ func main() {
 
 	if err := db.AutoMigrate(&controllers.User{}); err != nil {
 		log.Fatal("failed to migrate database:", err)
+	}
+
+	// load api key from .env file
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
 	}
 
 	controllers.SetDB(db)
