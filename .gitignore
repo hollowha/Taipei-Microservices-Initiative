@@ -1,2 +1,3 @@
 
 *.exe
+backend/.env

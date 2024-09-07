@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -10,9 +12,11 @@ import (
 
 // User struct 模擬一個 User 資料結構
 type User struct {
-	ID   int    `json:"id" gorm:"primaryKey"`
-	Name string `json:"name"`
-	Age  int    `json:"age"`
+	ID     int    `json:"id" gorm:"primaryKey"`
+	Name   string `json:"name"`
+	Age    int    `json:"age"`
+	Phone  string `json:"phone"`
+	Imgurl string `json:"imgurl"`
 }
 
 // 全域變數保存資料庫連接
@@ -50,6 +54,33 @@ func GetUserByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+// GetUserByID 根據 ID 取得單一使用者
+func GetUserIMGByFileName(c *gin.Context) {
+	filename := c.Param("filename")
+	// get the image file path based on the filename
+	imgFilePath := "./assets/userImg/" + filename
+
+	// Open the image file
+	imgFile, err := os.Open(imgFilePath)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Failed to open image file")
+		return
+	}
+	defer imgFile.Close()
+
+	// Set the appropriate headers for the file download
+	c.Header("Content-Type", "image/jpeg")
+	c.Header("Content-Disposition", "attachment; filename="+filename)
+
+	// Copy the file content to the response writer
+	if _, err := io.Copy(c.Writer, imgFile); err != nil {
+		c.String(http.StatusInternalServerError, "Failed to send image file")
+	}
+
+	// c.JSON(http.StatusOK, user)
+
 }
 
 // CreateUser 建立新使用者
