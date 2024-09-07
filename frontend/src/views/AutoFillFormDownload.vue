@@ -12,6 +12,12 @@ import {PDFDocument, rgb} from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 
 export default {
+    data() {
+        return {
+            formname: this.$route.query.formname,
+            userid: this.$route.query.userid,
+        };
+    },
     methods: {
         async modifyPdf(userid, formname) {
             try {
@@ -40,6 +46,7 @@ export default {
                 pdfDoc.registerFontkit(fontkit);
 
                 // Fetch the custom font
+                // get NotoSansSC-Medium from google
                 const fontUrl = require('@/assets/NotoSansSC-Medium.ttf');
                 const fontBytes = await fetch(fontUrl).then(res => res.arrayBuffer());
                 const customFont = await pdfDoc.embedFont(fontBytes);
@@ -101,8 +108,10 @@ export default {
         },
 
         async downloadPdf() {
-            const userid = this.$route.query.userid;
-            const formname = this.$route.query.formname;
+            
+            const userid = this.userid;
+            const formname = this.formname;
+            
             console.log(userid);
             console.log(formname);
 
