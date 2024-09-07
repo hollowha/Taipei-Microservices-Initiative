@@ -20,6 +20,7 @@ func InitRoutes(r *gin.Engine) {
 			// user.POST(/follow)
 			user.POST("/follow/:title", controllers.FollowActivity)
 			user.GET("/follow/:userID", controllers.GetFollows)
+			user.GET("/unfollow/:userID", controllers.GetUnfollows)
 		}
 
 		// Activity routes

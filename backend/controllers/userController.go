@@ -180,3 +180,15 @@ func GetFollows(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, follows)
 }
+
+func GetUnfollows(c *gin.Context) {
+	userID, _ := strconv.Atoi(c.Param("userID"))
+	var unfollows []models.Activity
+	query := "SELECT * FROM activities WHERE title not in (SELECT a.title FROM activities a  JOIN user_follows uf ON a.title = uf.activity_title WHERE uf.user_id = ?)"
+	err := db.Raw(query, userID).Scan(&unfollows).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get user unfollows"})
+		return
+	}
+	c.JSON(http.StatusOK, unfollows)
+}
