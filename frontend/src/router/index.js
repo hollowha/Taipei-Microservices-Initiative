@@ -6,7 +6,7 @@ import ReportSubmit from "@/views/ReportSubmit.vue";
 import ReportManage from "@/views/ReportManage.vue";
 import DataDetect from "@/views/DataDetect.vue";
 import AutoFillForm from "@/views/AutoFillForm.vue";
-import VotePage from "@/views/VotePage.vue";  // 確保這行存在
+import VotePage from "@/views/VotePage.vue"; // 確保這行存在
 
 const routes = [
   {
@@ -38,18 +38,17 @@ const routes = [
     path: "/report-manage",
     name: "report-manage",
     component: ReportManage,
-  }
-
+  },
   {
     path: "/data-detect",
     name: "data-detect",
     component: DataDetect,
   },
   {
-    path: "/vote",  // 確保這行存在
+    path: "/vote", // 確保這行存在
     name: "vote",
     component: VotePage,
-  }
+  },
 ];
 
 const router = createRouter({

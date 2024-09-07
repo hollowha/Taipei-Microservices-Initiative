@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { useConnectionMessage } from '../composables/useConnectionMessage';
+// import { useConnectionMessage } from '../composables/useConnectionMessage';
 
 export default {
     data() {
@@ -39,7 +39,7 @@ export default {
             const messageData = { name: 'userinfo', data: null };
             this.addLog(`即將發送訊息到 Flutter: ${JSON.stringify(messageData)}`);
 
-            useConnectionMessage(messageData.name, messageData.data);  // 使用 useConnectionMessage 發送訊息
+            // useConnectionMessage(messageData.name, messageData.data);  // 使用 useConnectionMessage 發送訊息
 
             this.addLog("訊息已發送至 Flutter");
         },
