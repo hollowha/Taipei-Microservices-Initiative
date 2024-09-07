@@ -4,10 +4,8 @@ import (
 	"backend/controllers"
 	"backend/routes"
 	"log"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
