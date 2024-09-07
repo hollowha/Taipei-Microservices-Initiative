@@ -32,5 +32,14 @@ func InitRoutes(r *gin.Engine) {
 			activity.GET("/:title", controllers.GetEvents)
 			activity.GET("/image/:imageTitle", controllers.ServeImage)
 		}
+
+		report := api.Group("/report")
+		{
+			report.GET("/all", controllers.GetAllReports)
+			report.POST("/", controllers.CreateReport)
+			report.DELETE("/:id", controllers.DeleteReportByID)
+			//report.GET("/:id", controllers.GetReportByID)
+		}
+
 	}
 }
