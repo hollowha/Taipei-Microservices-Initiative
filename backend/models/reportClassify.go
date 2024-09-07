@@ -12,11 +12,11 @@ func ReportClassify(data string) {
 	ctx := context.Background()
 
 	// 确保 gemini client 已经初始化
-	if geminiClient == nil {
-		initGeminiClient()
+	if GeminiClient == nil {
+		InitGeminiClient()
 	}
 
-	model := geminiClient.GenerativeModel("gemini-1.5-flash")
+	model := GeminiClient.GenerativeModel("gemini-1.5-flash")
 
 	model.SetTemperature(1)
 	model.SetTopK(64)

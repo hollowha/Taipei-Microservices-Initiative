@@ -16,12 +16,11 @@
         </div>
         <button type="submit" class="btn-submit">提交活動</button>
       </form>
-      <p v-if="successMessage" class="success">{{ successMessage }}</p>
+      <!--p v-if="successMessage" class="success">{{ successMessage }}</p!-->
     </div>
   </template>
   
   <script>
-  import axios from 'axios';
   
   export default {
     data() {
@@ -47,14 +46,27 @@
           options: this.options.map(option => ({ label: option.label }))
         };
   
-        axios.post('http://localhost:8081/api/vote/create', payload)
-            .then(() => {
-                this.successMessage = '活動已成功新增！';
-                this.activityName = '';
-                this.options = [{ label: '' }];
+        fetch('http://localhost:8081/api/vote/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              alert(data.message)
+              this.activityName = '';
+              this.options = [{ label: '' }];
             })
         .catch(error => {
-            console.error("無法新增活動", error);
+            alert("新增活動發生錯誤")
+            console.error("新增活動發生錯誤", error);
         });
       }
     }

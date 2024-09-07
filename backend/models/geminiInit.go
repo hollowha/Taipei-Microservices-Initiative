@@ -9,9 +9,9 @@ import (
 	"google.golang.org/api/option"
 )
 
-var geminiClient *genai.Client
+var GeminiClient *genai.Client
 
-func initGeminiClient() {
+func InitGeminiClient() {
 	apiKey, ok := os.LookupEnv("API_KEY")
 	if !ok {
 		log.Fatalf("API_KEY not found")
@@ -22,5 +22,5 @@ func initGeminiClient() {
 	if err != nil {
 		log.Fatalf("Error creating client: %v", err)
 	}
-	geminiClient = client
+	GeminiClient = client
 }
