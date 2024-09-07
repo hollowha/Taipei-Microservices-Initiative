@@ -4,27 +4,19 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/option"
 )
 
 func ReportClassify(data string) {
 	ctx := context.Background()
 
-	apiKey, ok := os.LookupEnv("API_KEY")
-	if !ok {
-		log.Fatalf("API_KEY not found")
+	// 确保 gemini client 已经初始化
+	if geminiClient == nil {
+		initGeminiClient()
 	}
 
-	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
-	if err != nil {
-		log.Fatalf("Error creating client: %v", err)
-	}
-	defer client.Close()
-
-	model := client.GenerativeModel("gemini-1.5-flash")
+	model := geminiClient.GenerativeModel("gemini-1.5-flash")
 
 	model.SetTemperature(1)
 	model.SetTopK(64)
