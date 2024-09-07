@@ -54,6 +54,7 @@ func InitRoutes(r *gin.Engine) {
 		{
 			vote.GET("/activities", controllers.GetVoteActivities) // 獲取所有投票活動及其選項
 			vote.POST("/submit", controllers.SubmitVote)           // 提交投票
+			vote.POST("/create", controllers.CreateVoteActivities)
 		}
 
 		itinerary := api.Group("/itinerary")
