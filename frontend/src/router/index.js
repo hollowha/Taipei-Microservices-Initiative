@@ -6,8 +6,8 @@ import ReportSubmit from "@/views/ReportSubmit.vue";
 import ReportManage from "@/views/ReportManage.vue";
 import DataDetect from "@/views/DataDetect.vue";
 import AutoFillForm from "@/views/AutoFillForm.vue";
+import VotePage from "@/views/VotePage.vue";  // 確保這行存在
 
-// 定義路由配置
 const routes = [
   {
     path: "/",
@@ -45,9 +45,13 @@ const routes = [
     name: "data-detect",
     component: DataDetect,
   },
+  {
+    path: "/vote",  // 確保這行存在
+    name: "vote",
+    component: VotePage,
+  }
 ];
 
-// 創建路由器實例
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,

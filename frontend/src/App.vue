@@ -8,6 +8,7 @@
         <router-link to="/report">回報問題</router-link>
         <router-link to="/detect">測試</router-link>
         <router-link to="/data-detect">資料檢測</router-link>
+        <router-link to="/vote">活動投票</router-link>
       </div>
     </nav>
     <div class="content">

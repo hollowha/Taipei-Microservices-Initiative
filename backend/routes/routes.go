@@ -50,5 +50,10 @@ func InitRoutes(r *gin.Engine) {
 			//report.GET("/:id", controllers.GetReportByID)
 		}
 
+		vote := api.Group("/vote")
+		{
+			vote.GET("/activities", controllers.GetVoteActivities) // 獲取所有投票活動及其選項
+			vote.POST("/submit", controllers.SubmitVote)           // 提交投票
+		}
 	}
 }
