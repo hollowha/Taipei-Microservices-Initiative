@@ -28,7 +28,7 @@ type VoteRequest struct {
 func GetRecord() ([]Event, error) {
 	var activities []Event
 
-	err := db.Preload("Options").Find(&activities).Error
+	err := db2.Preload("Options").Find(&activities).Error
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +38,7 @@ func GetRecord() ([]Event, error) {
 
 // 更新選項的投票數
 func UpdateVote(optionID int) error {
-	err := db.Model(&Option{}).Where("id = ?", optionID).Update("votes", gorm.Expr("votes + ?", 1)).Error
+	err := db2.Model(&Option{}).Where("id = ?", optionID).Update("votes", gorm.Expr("votes + ?", 1)).Error
 	return err
 }
 
