@@ -4,6 +4,8 @@
       <div class="nav-container">
         <router-link to="/" exact>首頁</router-link>
         <router-link to="/activities">查看活動</router-link>
+        <router-link to="/detect">測試</router-link>
+        <router-link to="/data-detect">資料檢測</router-link>
       </div>
     </nav>
     <div class="content">

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
 import ActivitiesList from "@/views/ActivitiesList.vue";
 import NoiceDetect from "@/views/NoiceDetect.vue";
+import DataDetect from "@/views/DataDetect.vue";
 
 // 定義路由配置
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     path: "/detect",
     name: "noice-detect",
     component: NoiceDetect,
+  },
+  {
+    path: "/data-detect",
+    name: "data-detect",
+    component: DataDetect,
   },
 ];
 
