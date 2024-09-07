@@ -65,7 +65,7 @@
               this.options = [{ label: '' }];
             })
         .catch(error => {
-            alert("新增活動發生錯誤")
+            alert("新增活動發生錯誤，內容可能包含不宜內容")
             console.error("新增活動發生錯誤", error);
         });
       }

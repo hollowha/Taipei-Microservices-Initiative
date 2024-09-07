@@ -160,6 +160,7 @@ func CheckEvent(eventString string) (bool, error) {
 	resp, err := session.SendMessage(ctx, genai.Text(eventString))
 	if err != nil {
 		log.Fatalf("Error sending message: %v", err)
+		return false, fmt.Errorf("error when sending event")
 	}
 	for _, part := range resp.Candidates[0].Content.Parts {
 		fmt.Printf("%v\n", part)
