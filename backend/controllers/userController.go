@@ -21,10 +21,12 @@ type User struct {
 
 // 全域變數保存資料庫連接
 var db *gorm.DB
+var db2 *gorm.DB
 
 // SetDB 設定資料庫實例
-func SetDB(database *gorm.DB) {
+func SetDB(database *gorm.DB, database2 *gorm.DB) {
 	db = database
+	db2 = database2
 }
 
 // var users = []User{
