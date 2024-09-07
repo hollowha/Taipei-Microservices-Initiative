@@ -9,6 +9,7 @@
         <router-link to="/detect">測試</router-link>
         <router-link to="/data-detect">資料檢測</router-link>
         <router-link to="/vote">活動投票</router-link>
+        <router-link to="/create-activity">增加活動與選項</router-link> <!-- 新增的按鈕 -->
       </div>
     </nav>
     <div class="content">

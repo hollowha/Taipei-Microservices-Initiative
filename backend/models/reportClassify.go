@@ -6,19 +6,18 @@ import (
 	"log"
 
 	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/option"
 )
 
 func ReportClassify(data string) {
 	ctx := context.Background()
 
-	client, err := genai.NewClient(ctx, option.WithAPIKey("AIzaSyAsrQ5ObzfFJfGjwAIaMcRxp4gW-PMiELg"))
-	if err != nil {
-		log.Fatalf("Error creating client: %v", err)
+	// 确保 gemini client 已经初始化
+	if GeminiClient == nil {
+		InitGeminiClient()
 	}
-	defer client.Close()
 
-	model := client.GenerativeModel("gemini-1.5-flash")
+	model := GeminiClient.GenerativeModel("gemini-1.5-flash")
+
 
 	model.SetTemperature(1)
 	model.SetTopK(64)

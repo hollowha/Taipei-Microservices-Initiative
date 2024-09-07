@@ -55,5 +55,11 @@ func InitRoutes(r *gin.Engine) {
 			vote.GET("/activities", controllers.GetVoteActivities) // 獲取所有投票活動及其選項
 			vote.POST("/submit", controllers.SubmitVote)           // 提交投票
 		}
+
+		itinerary := api.Group("/itinerary")
+		{
+			itinerary.POST("/", controllers.SubmitItinerary) // 提交行程，使用 gemini 模型推薦地點
+		}
+
 	}
 }

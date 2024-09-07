@@ -18,6 +18,11 @@ func main() {
 		log.Fatal("failed to connect database:", err)
 	}
 
+	db2, err := gorm.Open(sqlite.Open("service(1).db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal("failed to connect database:", err)
+	}
+
 	if err := db.AutoMigrate(&controllers.User{}); err != nil {
 		log.Fatal("failed to migrate database:", err)
 	}
@@ -30,7 +35,7 @@ func main() {
 	}
  	*/
 
-	controllers.SetDB(db)
+	controllers.SetDB(db, db2)
 
 	r := gin.Default()
 

@@ -7,6 +7,7 @@ import ReportManage from "@/views/ReportManage.vue";
 import DataDetect from "@/views/DataDetect.vue";
 import AutoFillForm from "@/views/AutoFillForm.vue";
 import VotePage from "@/views/VotePage.vue"; // 確保這行存在
+import CreateVoteActivity from '@/views/CreateActivity.vue';  // 新增這一行
 
 const routes = [
   {
@@ -49,6 +50,11 @@ const routes = [
     name: "vote",
     component: VotePage,
   },
+  {
+    path: '/create-activity',  // 新增活動的路徑
+    name: 'CreateActivity',
+    component: CreateVoteActivity,
+  }
 ];
 
 const router = createRouter({
