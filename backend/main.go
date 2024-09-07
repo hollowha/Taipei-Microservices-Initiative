@@ -25,10 +25,12 @@ func main() {
 	}
 
 	// load api key from .env file
+	/*
 	err = godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
+ 	*/
 
 	controllers.SetDB(db)
 
