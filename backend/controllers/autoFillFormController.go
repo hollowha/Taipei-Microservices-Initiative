@@ -93,3 +93,9 @@ func SavePDF(c *gin.Context) {
 	// Respond with success
 	c.JSON(http.StatusOK, gin.H{"message": "File saved successfully"})
 }
+
+func ShowForm(c *gin.Context) {
+	fmt.Println("ShowForm")
+	formname := c.Param("formname")
+	c.File("./assets/filledPdf/" + formname)
+}

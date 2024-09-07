@@ -39,7 +39,7 @@ func InitRoutes(r *gin.Engine) {
 
 		autofillform := api.Group("/autofillform")
 		{
-
+			autofillform.GET("/showpdf/:formname", controllers.ShowForm)
 			autofillform.GET("/:formname", controllers.FillFormbyID)
 			autofillform.GET("/detail/:formname", controllers.GetFormDetail)
 			autofillform.POST("/savePDF/:formname", controllers.SavePDF)
