@@ -17,12 +17,9 @@ func InitRoutes(r *gin.Engine) {
 		// User routes
 		user := api.Group("/users")
 		{
-			user.GET("/", controllers.GetAllUsers)
-			user.GET("/image/:filename", controllers.GetUserIMGByFileName)
-			user.GET("/:id", controllers.GetUserByID)
-			user.POST("/", controllers.CreateUser)
-			user.PUT("/:id", controllers.UpdateUserByID)
-			user.DELETE("/:id", controllers.DeleteUserByID)
+			// user.POST(/follow)
+			user.POST("/follow/:title", controllers.FollowActivity)
+			user.GET("/follow/:userID", controllers.GetFollows)
 		}
 
 		// Activity routes

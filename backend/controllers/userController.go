@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"backend/models"
 	"io"
 	"net/http"
 	"os"
@@ -134,4 +135,48 @@ func DeleteUserByID(c *gin.Context) {
 
 	db.Delete(&user)
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
+}
+
+func FollowActivity(c *gin.Context) {
+	title := c.Param("title")
+	// query
+	userID := 1
+	var count int
+	query := "SELECT COUNT(activity_title) FROM user_follows WHERE user_id = ? and activity_title = ?"
+	err := db.Raw(query, userID, title).Scan(&count).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "database error"})
+		return
+	}
+	// fmt.Println("count:", count)
+	if count == 0 {
+		// do insertion
+		query = `INSERT INTO user_follows VALUES (?, ?)`
+		err = db.Exec(query, userID, title).Error
+	} else {
+		query = `DELETE FROM user_follows WHERE user_id = ? and activity_title = ?`
+		err = db.Exec(query, userID, title).Error
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "database error"})
+		return
+	}
+	if count == 0 {
+		c.JSON(http.StatusOK, gin.H{"message": "follow the activity"})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": "unfollow the activity"})
+	}
+
+}
+
+func GetFollows(c *gin.Context) {
+	userID, _ := strconv.Atoi(c.Param("userID"))
+	var follows []models.Activity
+	query := "SELECT a.* FROM activities a JOIN user_follows uf ON a.title = uf.activity_title WHERE uf.user_id = ?"
+	err := db.Raw(query, userID).Scan(&follows).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get user follows"})
+		return
+	}
+	c.JSON(http.StatusOK, follows)
 }
