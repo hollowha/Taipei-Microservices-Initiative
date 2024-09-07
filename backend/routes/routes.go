@@ -17,12 +17,14 @@ func InitRoutes(r *gin.Engine) {
 		// User routes
 		user := api.Group("/users")
 		{
+
 			user.GET("/", controllers.GetAllUsers)
 			user.GET("/image/:filename", controllers.GetUserIMGByFileName)
 			user.GET("/:id", controllers.GetUserByID)
 			user.POST("/", controllers.CreateUser)
 			user.PUT("/:id", controllers.UpdateUserByID)
 			user.DELETE("/:id", controllers.DeleteUserByID)
+
 		}
 
 		// Activity routes
@@ -32,6 +34,7 @@ func InitRoutes(r *gin.Engine) {
 			activity.POST("/", controllers.CreateEvent)
 			activity.GET("/:title", controllers.GetEvents)
 			activity.GET("/image/:imageTitle", controllers.ServeImage)
+
 		}
 
 		autofillform := api.Group("/autofillform")
@@ -39,6 +42,7 @@ func InitRoutes(r *gin.Engine) {
 
 			autofillform.GET("/:formname", controllers.FillFormbyID)
 			autofillform.GET("/detail/:formname", controllers.GetFormDetail)
+			autofillform.POST("/savePDF/:formname", controllers.SavePDF)
 
 		}
 	}

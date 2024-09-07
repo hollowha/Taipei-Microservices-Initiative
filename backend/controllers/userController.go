@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -60,7 +61,8 @@ func GetUserByID(c *gin.Context) {
 func GetUserIMGByFileName(c *gin.Context) {
 	filename := c.Param("filename")
 	// get the image file path based on the filename
-	imgFilePath := "./assets/userImg/" + filename
+	imgFilePath := "./uploads/" + filename
+	fmt.Printf("imgFilePath: %s\n", imgFilePath)
 
 	// Open the image file
 	imgFile, err := os.Open(imgFilePath)
@@ -101,13 +103,16 @@ func UpdateUserByID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
 	}
+	fmt.Println(id)
+	// print content of request body
+	fmt.Println(c.Request.Body)
 
 	var user User
 	if result := db.First(&user, id); result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
-
+	fmt.Println(user)
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

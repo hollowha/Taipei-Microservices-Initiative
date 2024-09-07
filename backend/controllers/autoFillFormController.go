@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -53,4 +55,41 @@ func GetFormDetail(c *gin.Context) {
 		"formname": form.Formname,
 		"detail":   form.Detail,
 	})
+}
+
+func SavePDF(c *gin.Context) {
+	formname := c.Param("formname")
+	fmt.Println("formname", formname)
+	// Get the form file path based on the ID
+	filepath := "./assets/filledPdf/" + formname + ".pdf"
+
+	if formname == "" {
+		fmt.Println("formname is required")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Form name is required"})
+		return
+	}
+
+	// Read the raw PDF bytes from the request body
+	pdfBytes, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read request body"})
+		return
+	}
+
+	outFile, err := os.Create(filepath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create file"})
+		return
+	}
+	defer outFile.Close()
+
+	// Write the raw PDF bytes to the file
+	_, err = outFile.Write(pdfBytes)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write file"})
+		return
+	}
+
+	// Respond with success
+	c.JSON(http.StatusOK, gin.H{"message": "File saved successfully"})
 }

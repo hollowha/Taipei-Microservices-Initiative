@@ -4,6 +4,7 @@ import ActivitiesList from "@/views/ActivitiesList.vue";
 // import AutoFillFormtmp from "@/views/AutoFillFormtmp.vue";
 import AutoFillFormSelect from "@/views/AutoFillFormSelect.vue";
 import AutoFillFormFill from "@/views/AutoFillFormFill.vue";
+import AutoFillFormDownload from "@/views/AutoFillFormDownload.vue";
 // 定義路由配置
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
     path: "/auto-fill-form/:formType",
     name: "auto-fill-form",
     component: AutoFillFormFill,
+  },
+  // set route for`/autofillform/download?formname=${this.formType}&userid=5`
+  {
+    path: "/autofillform/download",
+    name: "auto-fill-form-download",
+    component: AutoFillFormDownload,
   },
   
 ];
